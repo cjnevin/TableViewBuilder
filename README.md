@@ -139,12 +139,12 @@ class ViewController: UIViewController {
   }
 
   @objc private func edit(sender: UIBarButtonItem) {
-    let inserted = tableView.sections.map { (section: TableViewSection) -> TableViewSection in
+    let inserted = tableView.currentSections.map { (section: TableViewSection) -> TableViewSection in
       var copy = section
       copy.rows.insert(InsertCell.Values(title: "Insert"), at: 0)
       return copy
     }
-    tableView.updateSections {
+    tableView.sections {
       inserted
     }
     tableView.setIsEditing(true)
@@ -152,7 +152,7 @@ class ViewController: UIViewController {
   }
 
   @objc private func done(sender: UIBarButtonItem) {
-    let filtered = tableView.sections.compactMap { (section: TableViewSection) -> TableViewSection? in
+    let filtered = tableView.currentSections.compactMap { (section: TableViewSection) -> TableViewSection? in
       var copy = section
       copy.rows = section.rows.filter { !($0 is InsertCell.Values) }
       if copy.rows.isEmpty {
@@ -160,7 +160,7 @@ class ViewController: UIViewController {
       }
       return copy
     }
-    tableView.updateSections {
+    tableView.sections {
       filtered
     }
 
